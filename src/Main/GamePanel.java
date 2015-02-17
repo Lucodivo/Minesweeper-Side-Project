@@ -17,9 +17,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	
 	//game thread
 	private Thread thread;
-	private boolean running;
-	private int FPS = 60;
-	private long targetTime = 1000 / FPS;
 	
 	public GamePanel() {
 		super();
