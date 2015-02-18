@@ -4,16 +4,20 @@ import java.util.Random;
 
 public class BoardState {
 	//declare an array for the blocks on the board
-	public BlockState[] blockStates;
+	private BlockState[] blockStates;
 	//width used for length of rows
-	public int boardWidth;
+	private int boardWidth;
+	//we don't actually ever us this variable...maybe just get rid of it
+	private int boardHeight;
 	
+	//generate (pseudo)random numbers
 	private Random rndGen;
 	
-	public BoardState(int gameWidth){
-		//to be more dynamic later
-		blockStates = new BlockState[gameWidth * gameWidth];
-		boardWidth = gameWidth;
+	//dynamic board of blocks, using a 1D array for no good reason
+	public BoardState(int gameWidth, int gameHeight){
+		this.boardHeight = gameHeight;
+		this.boardWidth = gameWidth;
+		blockStates = new BlockState[this.boardWidth * this.boardHeight];
 		rndGen = new Random();
 		init();
 	}
@@ -25,9 +29,9 @@ public class BoardState {
 		}
 		//setting the attributes for each mine
 		for(int i = 0; i < blockStates.length; i++){
-			//turns every four blocks into a mine
-			if(rndGen.nextInt() % 4 == 0){
-				blockStates[i].isMine = true;
+			//turns one in five blocks into a mine
+			if(rndGen.nextInt() % 5 == 0){
+				blockStates[i].setMine();
 				//if i is passed the first row
 				if(i >= boardWidth){
 					//announce to north block there is an adjacent mine
@@ -94,22 +98,23 @@ public class BoardState {
 				}
 			}
 			else{
-
-				blockStates[i].isMine = false;
+				//it aint no mine
+				blockStates[i].setNotMine();
 			}
 		}
 	}
 	
+	//for testing purposes. Won't be used in game.
 	public void printBoard(){
 		for(int i = 0; i < blockStates.length; i++){
 			if(i % boardWidth == 0){
 				System.out.printf("\n");
 			}
-			if(blockStates[i].isMine){
+			if(blockStates[i].getIsMine()){
 				System.out.printf("X");
 			}
 			else{
-				System.out.printf("%d", blockStates[i].numMines);
+				System.out.printf("%d", blockStates[i].getNumMines());
 			}
 		}
 	}
